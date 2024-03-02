@@ -8,7 +8,7 @@ import { PORT } from "./config.js";
 
 connectDB();
 
-cron.schedule('10 7 * * * *',async ()=>{ //all days at seven with ten minuts send email with data of the tasks of each user
+cron.schedule('*/1 * * * *',async ()=>{ //all days at seven with ten minuts send email with data of the tasks of each user
   try {
     const userFounds = await getUsers();
     userFounds.map(async (user)=>{
@@ -18,7 +18,7 @@ cron.schedule('10 7 * * * *',async ()=>{ //all days at seven with ten minuts sen
       }
     });
   } catch (error) {
-    console.log('error ')
+    console.log(error)
   }
 })
 

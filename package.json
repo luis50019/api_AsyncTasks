@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "bcryptjs": "^2.4.3",
@@ -22,7 +23,6 @@
     "mongoos": "^0.0.1-security",
     "mongoose": "^8.2.0",
     "morgan": "^1.10.0",
-    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.11",
     "nodemon": "^3.0.2",
     "zod": "^3.22.4"
