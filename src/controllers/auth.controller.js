@@ -35,7 +35,7 @@ export const register = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(500).json({message: "error"})
+        res.status(500).json({message: error})
     }
 }
 
@@ -50,7 +50,8 @@ export const login = async (req, res) => {
         if (!isMatch) return res.status(400).json({message: "The password is not match"});
 
         const token = await createAccessToken({ id: userFound._id })
-        res.cookie('token', token)
+        console.log("token:", token);
+        res.cookies('token', token)
 
         res.json({
             id: userFound._id,
