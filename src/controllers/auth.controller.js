@@ -22,7 +22,7 @@ export const register = async (req, res) => {
 
         const userSaved = await newUser.save();
         const token = await createAccessToken({ id: userSaved._id });
-
+        console.log("tokem: :::",token);
         res.cookie('token', token);
 
         res.json({
