@@ -3,14 +3,19 @@ import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
 
 export const validateToken =  (req,res,next)=>{
-    const { token } = req.cookies.access_token;
-    if (!token) return res.status(401).json({menssage: "The token not exist"});
+    const { access_token } = req.cookies;
+    if (!access_token)
+      return res.status(401).json({ menssage: "The token not exist" });
 
-    jwt.verify(token,TOKEN_SECRET, (err,user)=>{
-        if (err) return res.status(403).json({menssage: "Invalid token"});
-        req.user = user;
-        next();
-    })
+    try {
+        const data = jwt.verify(access_token, TOKEN_SECRET);
+        req.user= data;
+    } catch (error) {
+        req.user = null;
+        res.status(500);
+    }
+    
+    next();
 }
 
 export default validateToken;

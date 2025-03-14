@@ -48,9 +48,7 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, userFound.password);
         if (!isMatch) return res.status(400).json({message: "The password is not match"});
 
-        const token = jwt.sign({ id: userFound._id },TOKEN_SECRET,{
-            encoding:'1h'
-        }); 
+        const token = await createAccessToken({id: userFound._id});
         console.log("token:", token);
 
         res.cookie("access_token", token).json({
@@ -62,6 +60,7 @@ export const login = async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "error" });
     }
 
@@ -69,10 +68,10 @@ export const login = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-    res.cookie('token', '', {
-        expires: new Date(0)
-    });
-    res.status(200).json('The user is logout');
+    res
+      .clearCookie("access_token")
+      .status(200)
+      .json("The user is logout");
 }
 
 export const profile = async (req, res) => {
@@ -87,26 +86,25 @@ export const profile = async (req, res) => {
 }
 
 export const verifyToken = async (req, res) => {
-    const { token } = req.cookies.access_token;
-    if (!token) return res.status(401).json({ message: "Unauthorized" });
+    const { access_token } = req.cookies;
+    if (!access_token) return res.status(401).json({ message: "Unauthorized" });
 
-    jwt.verify(token, TOKEN_SECRET, async (error, user) => {
+    jwt.verify(access_token, TOKEN_SECRET, async (error, user) => {
+      if (error) return res.status(401).json({ message: "Unauthorized" });
 
-        if (error) return res.status(401).json({ message: "Unauthorized" });
+      try {
+        const userFound = await User.findById(user.id);
+        if (!userFound) return res.json(401).json({ message: "Unauthorized" });
 
-        try {
-            const userFound = await User.findById(user.id);
-            if (!userFound) return res.json(401).json({ message: "Unauthorized" });
-
-            return res.json({
-                username: userFound.username,
-                email: userFound.email,
-                id: userFound._id
-            })
-        } catch (error) {
-            console.log(error);
-        }
-    })
+        return res.json({
+          username: userFound.username,
+          email: userFound.email,
+          id: userFound._id,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
 }
 
 export const getUsers = async()=>{
