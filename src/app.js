@@ -8,6 +8,8 @@ import authRoutes from './routers/auth.routes.js';
 import taskRouter from './routers/task.routes.js';
 
 const app = express();
+app.use(express.json());
+app.use(cookieParser());
 
 app.use(cors({
     origin: FRONTEND_URL,
@@ -15,8 +17,6 @@ app.use(cors({
 }))
 
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(cookieParser());
 app.use(authRoutes);
 app.use(taskRouter);
 

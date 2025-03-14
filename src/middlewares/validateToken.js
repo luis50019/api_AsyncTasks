@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { TOKEN_SECRET } from '../config.js';
 
 export const validateToken =  (req,res,next)=>{
+    console.log(req.cookies);
     const { access_token } = req.cookies;
     if (!access_token)
       return res.status(401).json({ menssage: "The token not exist" });

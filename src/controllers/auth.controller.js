@@ -24,14 +24,14 @@ export const register = async (req, res) => {
         const token = await createAccessToken({ id: userSaved._id });
         
         console.log("tokem: :::",token);
-        res.cookie('access_token', token).json({
-            id: userSaved._id,
-            username: userSaved.username,
-            email: userSaved.email,
-            password: userSaved.password,
-            createAt: userSaved.createAt,
-            updateAt: userSaved.updateAt
-        })
+        res.cookie("access_token", token, { sameSite: "None" }).json({
+          id: userSaved._id,
+          username: userSaved.username,
+          email: userSaved.email,
+          password: userSaved.password,
+          createAt: userSaved.createAt,
+          updateAt: userSaved.updateAt,
+        });
 
     } catch (error) {
         res.status(500).json({message: "error"})
@@ -51,7 +51,7 @@ export const login = async (req, res) => {
         const token = await createAccessToken({id: userFound._id});
         console.log("token:", token);
 
-        res.cookie("access_token", token).json({
+        res.cookie("access_token", token, { sameSite: "None" }).json({
           id: userFound._id,
           username: userFound.username,
           email: userFound.email,
