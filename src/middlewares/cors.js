@@ -2,8 +2,8 @@ import cors from "cors";
 
 const ACCEPTED_ORIGINS = [
   "https://async-tasks.vercel.app",
-  "http://localhost:5173",
-  "localhost:5173",
+  "http://localhost:5173/",
+  "localhost:5173/",
 ];
 
 export const corsMiddleware = ({
