@@ -3,7 +3,6 @@
 import User from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import { createAccessToken } from "../libs/jwt.js";
-import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
 import jwt from "jsonwebtoken";
 
