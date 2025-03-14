@@ -18,6 +18,7 @@ cron.schedule('20 7 * * *',async ()=>{ //all days at seven with ten minuts send 
       }
     });
   } catch (error) {
+    console.log("error aqui")
     console.log(error)
   }
 })

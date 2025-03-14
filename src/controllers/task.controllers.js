@@ -79,7 +79,7 @@ export const deleteTask = async (req,res)=>{
         return res.sendStatus(204);
         
     } catch (error) {
-        return res.status(404).json({message: "Task nor found"});
+        return res.status(404).json({message: "Task not found"});
     }
 
 }
@@ -112,6 +112,6 @@ export const getTasksEmail = async(user)=>{
       return sectionCounts;
 
     } catch (error) {
-      console.log("hubo un fallo");
+      return res.status(404).json({ message: "Error tasks " });
     }
 }

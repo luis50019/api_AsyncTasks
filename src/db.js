@@ -8,6 +8,7 @@ export const connectDB = async()=>{
         console.log('>>> DB is connect');
 
     } catch (error) {
-        console.log(Error);
+        console.log("eror al conectase ala base de adtos")
+        
     }
 }
