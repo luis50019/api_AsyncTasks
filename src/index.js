@@ -8,7 +8,7 @@ import { PORT } from "./config.js";
 
 connectDB();
 
-cron.schedule('20 7 * * *',async ()=>{ //all days at seven with ten minuts send email with data of the tasks of each user
+/*cron.schedule('20 7 * * *',async ()=>{ //all days at seven with ten minuts send email with data of the tasks of each user
   try {
     const userFounds = await getUsers();
     userFounds.map(async (user)=>{
@@ -22,6 +22,6 @@ cron.schedule('20 7 * * *',async ()=>{ //all days at seven with ten minuts send 
     console.log(error)
   }
 })
-
+*/
 app.listen(PORT);
 console.log('The server is live in the port 4000')

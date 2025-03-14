@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import { createAccessToken } from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
     const { email, username, password } = req.body;
@@ -22,10 +23,9 @@ export const register = async (req, res) => {
 
         const userSaved = await newUser.save();
         const token = await createAccessToken({ id: userSaved._id });
+        
         console.log("tokem: :::",token);
-        res.cookie('token', token);
-
-        res.json({
+        res.cookie('access_token', token).json({
             id: userSaved._id,
             username: userSaved.username,
             email: userSaved.email,
@@ -49,16 +49,17 @@ export const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, userFound.password);
         if (!isMatch) return res.status(400).json({message: "The password is not match"});
 
-        const token = await createAccessToken({ id: userFound._id })
+        const token = jwt.sign({ id: userFound._id },TOKEN_SECRET,{
+            encoding:'1h'
+        }); 
         console.log("token:", token);
-        res.cookie('token', token)
 
-        res.json({
-            id: userFound._id,
-            username: userFound.username,
-            email: userFound.email,
-            createAt: userFound.createdAt,
-            updateAt: userFound.updatedAt
+        res.cookie("access_token", token).json({
+          id: userFound._id,
+          username: userFound.username,
+          email: userFound.email,
+          createAt: userFound.createdAt,
+          updateAt: userFound.updatedAt,
         });
 
     } catch (error) {
@@ -87,7 +88,7 @@ export const profile = async (req, res) => {
 }
 
 export const verifyToken = async (req, res) => {
-    const { token } = req.cookies;
+    const { token } = req.cookies.access_token;
     if (!token) return res.status(401).json({ message: "Unauthorized" });
 
     jwt.verify(token, TOKEN_SECRET, async (error, user) => {
